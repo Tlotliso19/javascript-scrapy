@@ -1,0 +1,2 @@
+C:\Users\tlotliso.makoboshane\projects\javascript-scrapy\.venv\Scripts\Activate
+python -m scrapy crawl financial_prices
