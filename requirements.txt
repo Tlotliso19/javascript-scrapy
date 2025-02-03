@@ -4,3 +4,4 @@ python-dotenv
 scrapy_selenium
 astrapy
 polygon
+psycopg2
