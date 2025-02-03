@@ -1,4 +1,5 @@
 import scrapy
+from three_websites.items import CommoditiesPrices
 
 
 class CommoditiesspiderSpider(scrapy.Spider):
@@ -7,6 +8,7 @@ class CommoditiesspiderSpider(scrapy.Spider):
     start_urls = ["https://tradingeconomics.com/commodities"]
 
     def parse(self, response):
+        comodities_prices=CommoditiesPrices()
         table_rows=response.css('table tbody tr')
         for row in table_rows:
             if row:
@@ -21,10 +23,17 @@ class CommoditiesspiderSpider(scrapy.Spider):
                 YOYs=row.css('td:nth-child(8)::text').getall()
                 dates=row.css('td:nth-child(9)::text').getall()
                 for name,price,day,percentage,weekly,monthly,YTD,YOY,date in zip(names,prices,days,percentages,weeklys,monthlys,YTDs,YOYs,dates):
-                    entry=name.strip(),price.strip(),day.strip(),percentage.strip(),weekly.strip(),monthly.strip(),YTD.strip(),YOY.strip(),date.strip()
-                    yield{
-                    'entry':entry
-                    }
+                    
+                    comodities_prices['name']=name.strip()
+                    comodities_prices['price']=price.strip()
+                    comodities_prices['day']=day.strip()
+                    comodities_prices['percentage']=percentage.strip()
+                    comodities_prices['weekly']=weekly.strip()
+                    comodities_prices['monthly']=monthly.strip()
+                    comodities_prices['YTD']=YTD.strip()
+                    comodities_prices['YOY']=YOY.strip()
+                    comodities_prices['date']=date.strip()
+                    yield comodities_prices
         else:
             yield{
                 'nothing':'there is nothing'

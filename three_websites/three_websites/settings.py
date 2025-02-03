@@ -65,8 +65,9 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
    "three_websites.pipelines.GeneralEconomicsCleaner":100,
   #  "three_websites.pipelines.CustomSave":200,
-   "three_websites.pipelines.SaveToMongoDB": 300,
+   #"three_websites.pipelines.SaveToMongoDB": 300,
 #    "three_websites.pipelines.ThreeWebsitesPipeline": 300,
+"three_websites.pipelines.SaveToPostgresql":300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -109,4 +110,5 @@ DOWNLOADER_MIDDLEWARES = {
 
 # mongodb setting 
 MONGO_URI='mongodb+srv://tlotlisoem:tlotliso19@cluster0.93oee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-MONGO_DATABASE='homr'
+#MONGO_DATABASE='homr'
+POSTGRESQL_URL="postgresql://erik_user:vJnjEibIrqr3BkvAwmjcZdbUiFi4oXfK@dpg-ctuh0f8gph6c73eqljrg-a.oregon-postgres.render.com/erik"

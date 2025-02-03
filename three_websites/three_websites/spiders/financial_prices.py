@@ -1,7 +1,12 @@
 import scrapy
 from scrapy_selenium import SeleniumRequest
 from three_websites.items import GeneralEconomics,Comodities,Currencies,Bonds,Stocks,Crypto_1,Crypto_2
+from datetime import datetime, timedelta
 
+today = datetime.now() 
+
+yesterday= today-timedelta(days=1)
+today_date=today.strftime('%Y/%m/%d')
 
 class FinancialPricesSpider(scrapy.Spider):
     name = "financial_prices"
@@ -55,7 +60,8 @@ class FinancialPricesSpider(scrapy.Spider):
                 economics_item["Debt_per_GDP"]=row_entry[7] or ""
                 economics_item["Current_Account"]=row_entry[8] or ""
                 economics_item["Population"]=row_entry[9] or ""
-                economics_item['file_type']='csv'
+                economics_item["today_date"]=today_date 
+               
                 #full_table.append(row_entry)
                 yield economics_item
             else:
@@ -113,7 +119,8 @@ class FinancialPricesSpider(scrapy.Spider):
                                 currencies['YTD'] =YTD.strip()
                                 currencies['YOY'] = YOY.strip()
                                 currencies['date'] =date.strip()
-                                currencies['file_type']='csv'
+                                currencies['today_date']=today_date
+                                
 
                           
                           
@@ -152,7 +159,9 @@ class FinancialPricesSpider(scrapy.Spider):
                                 stocks['YTD'] = YTD.strip()
                                 stocks['YOY'] = YOY.strip()
                                 stocks['date'] = date.strip()
-                                stocks['file_type'] = 'json'
+                                stocks['today_date'] =today_date
+
+                              
 
                                 yield stocks 
                                 
@@ -188,7 +197,8 @@ class FinancialPricesSpider(scrapy.Spider):
                                 
                                 comodities['YOY'] = YOY.strip()
                                 comodities['date'] = date.strip()
-                                comodities['file_type'] = 'json'
+                                comodities['today_date'] = today_date
+                                
 
                                 yield comodities 
                            
@@ -224,7 +234,9 @@ class FinancialPricesSpider(scrapy.Spider):
                                 bonds['YTD']  = YTD.strip()
                                 bonds['YOY'] = YOY.strip()
                                 bonds['date']  =  date.strip()
-                                bonds['file_type'] = 'json'
+                                bonds['today_date'] =today_date
+
+                               
 
                                 yield bonds 
                            
@@ -281,7 +293,8 @@ class FinancialPricesSpider(scrapy.Spider):
                                     crypto_2['YOY'] = YOY.strip()
                                 
                                     crypto_2['date'] = date.strip()
-                                    crypto_2['file_type'] = 'csv' 
+                                    crypto_2['today_date']=today_date
+                                   
                                     yield crypto_2
                                     
                                
@@ -309,7 +322,9 @@ class FinancialPricesSpider(scrapy.Spider):
                                     crypto_1['YOY'] = YOY.strip()
                                     crypto_1['martket_cap'] = market_cap.strip()
                                     crypto_1['date'] = date.strip()
-                                    crypto_1['file_type'] = 'json'
+                                    crypto_1['today_date']=today_date
+
+                                    
                              
                                     yield  crypto_1
                              

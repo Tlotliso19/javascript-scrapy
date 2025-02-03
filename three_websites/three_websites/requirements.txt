@@ -1,0 +1,6 @@
+pymongo
+scrapy
+python-dotenv
+scrapy_selenium
+astrapy
+polygon

@@ -1,4 +1,5 @@
 import scrapy
+from three_websites.items import YahooFutures
 
 
 class YahooFuturesSpider(scrapy.Spider):
@@ -7,6 +8,7 @@ class YahooFuturesSpider(scrapy.Spider):
     start_urls = ["https://finance.yahoo.com/markets/commodities/"]
 
     def parse(self, response):
+        yahoo_futures=YahooFutures()
         table_headings=response.css('table thead tr th div::text').getall()
         rows= response.css('table tbody tr')
         table_rows=[]
@@ -22,14 +24,17 @@ class YahooFuturesSpider(scrapy.Spider):
             open_interest_index = row.css('td:nth-child(9) span::text').getall()  # Seventh column
     
             for symbol,name,price,market_time,change,change_pecent,volume,open_interest in zip(symbol_index,name_index,price_index,market_time_index,change_index,change_pecent_index,volume_index,open_interest_index):
-                table_row=symbol,name,price,market_time,change,change_pecent,volume,open_interest
-                yield{
-                    'table_row':table_row
-                }
-        yield{
-            'table_headings':table_headings
-            #'table_rows':table_rows
-            }
+                 yahoo_futures['symbol']=symbol
+                 yahoo_futures['name']=name
+                 yahoo_futures['price']=price
+                 yahoo_futures['market_time']=market_time
+                 yahoo_futures['change']=change
+                 yahoo_futures['change_pecent']=change_pecent
+                 yahoo_futures['volume']=volume
+                 yahoo_futures['open_interest']=open_interest
+
+                 yield yahoo_futures
+       
 
           
 
