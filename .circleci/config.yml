@@ -1,36 +1,30 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:python:three_websites/three_websites
 version: 2.1
+
 orbs:
-  python: circleci/python@2
+  win: circleci/windows@5.0
+
 jobs:
-  test-python:
-    # Install dependencies and run tests
-    docker:
-      - image: cimg/python:3.8-node
-    working_directory: ~/project/three_websites/three_websites
+  build:
+    executor:
+      name: win/default
     steps:
-      - checkout:
-          path: ~/project
-      - python/install-packages
+      - checkout
       - run:
-          name: Run tests
-          command: pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
-      - store_test_results:
-          path: junit.xml
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
+          name: Checking the working directory
+          command: "dir"
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
-workflows:
-  build-and-test:
-    jobs:
-      - test-python
-    # - deploy:
-    #     requires:
-    #       - test-python
+          name: Verify Python Installation
+          command: "python --version"
+      - run:
+          name: Ensure pip is installed
+          command: "python -m ensurepip"
+      - run:
+          name: Upgrade pip
+          command: "python -m pip install --upgrade pip"
+      - run:
+          name: Install dependencies
+          command: "pip install -r requirements.txt"
+      - run:
+          name: Run Scrapy Spider
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl financial_prices"
