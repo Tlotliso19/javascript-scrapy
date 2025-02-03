@@ -1,14 +1,15 @@
 --dealing with the crypt_1 table
 CREATE TEMP TABLE crypto_cap AS
-select name, cast(yoy as float),cast(ytd as float),cast(day as float),cast(martket_cap as bigint),
-cast(monthly as float),cast(pecentage as float), cast(price as float),cast(weekly as float),
+select name, cast(yoy as float),cast(ytd as float),CAST(REPLACE(day, ',','') AS FLOAT),cast(martket_cap as bigint),
+CAST(REPLACE(day, ',','') AS FLOAT) AS day,cast(weekly as float),
+cast(monthly as float),cast(pecentage as float), cast(price as float),
 today_date from crypto_1;  -- casting data types
  
 CREATE TABLE IF NOT EXISTS crypto_cap_coded (
     name TEXT,
     yoy INT,
     ytd INT,
-    day_volume INT,
+    day INT,
     market_cap INT,
     weekly INT,
     monthly INT,
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS crypto_cap_coded (
 
 
 
-INSERT INTO  crypto_cap_coded  (name,yoy,ytd,day_volume,market_cap,weekly,monthly,percentage, price ,today_date) --insrting into th co tabl
+INSERT INTO  crypto_cap_coded  (name,yoy,ytd,day,market_cap,weekly,monthly,percentage, price ,today_date) --insrting into th co tabl
 
  WITH yesterday AS 
  ( SELECT * FROM crypto_cap
@@ -36,7 +37,7 @@ CASE WHEN t.weekly>y.weekly THEN 1 WHEN t.weekly = y.weekly THEN 0 ELSE -1 END A
 CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly = y.monthly THEN 0 ELSE -1 END AS monthly_coded,
 CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.pecentage = y.pecentage THEN 0 ELSE -1 END AS pecentage_coded,
 CASE WHEN t.price>y.price THEN 1 WHEN t.price = y.price THEN 0 ELSE -1 END AS price_coded,
- today_date
+ t.today_date
 
 FROM  yesterday y join today t
 on y.name=t.name;
@@ -47,7 +48,7 @@ on y.name=t.name;
 CREATE TEMP TABLE crypto AS SELECT name,CAST(yoy AS FLOAT),CAST(ytd AS FLOAT),
  CAST(REPLACE(day, ',','') AS FLOAT) AS day,
  CAST(weekly AS FLOAT),CAST(monthly AS FLOAT),CAST(pecentage AS FLOAT), 
- CAST(price AS FLOAT)
+ CAST(price AS FLOAT),today_date
   FROM crypto_2 ; --casting ata typs
 
 
@@ -80,7 +81,7 @@ SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END A
             CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
             CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.pecentage=y.pecentage THEN 0 ELSE -1 END AS pecentage,
             CASE WHEN t.price>y.price THEN 1 WHEN t.price=y.price THEN 0 ELSE -1 END AS price,
-            today_date
+            t.today_date
     FROM yesterday y join today t 
     ON y.name =t.name;
 
@@ -122,7 +123,7 @@ SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END A
             CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
             CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.pecentage=y.pecentage THEN 0 ELSE -1 END AS pecentage,
             CASE WHEN t.price>y.price THEN 1 WHEN t.price=y.price THEN 0 ELSE -1 END AS price,
-            today_date
+            t.today_date
     FROM yesterday y join today t 
     ON y.name =t.name;
 
@@ -163,6 +164,94 @@ SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END A
             CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
             CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.pecentage=y.pecentage THEN 0 ELSE -1 END AS pecentage,
             CASE WHEN t.price>y.price THEN 1 WHEN t.price=y.price THEN 0 ELSE -1 END AS price,
-            today_date
+            t.today_date
+    FROM yesterday y join today t 
+    ON y.name =t.name;
+
+
+--dealing with stocks table
+CREATE TEMP TABLE stocks_cast AS
+SELECT name,CAST(yoy AS FLOAT),CAST(ytd AS FLOAT),
+ CAST(REPLACE(day, ',','') AS FLOAT) AS day,
+ CAST(weekly AS FLOAT),CAST(monthly AS FLOAT),CAST(pecentage AS FLOAT), 
+ CAST(price AS FLOAT),today_date
+ 
+  FROM stocks;
+
+
+
+CREATE TABLE IF NOT EXISTS stocks_coded (
+    name TEXT,
+    yoy INT,
+    ytd INT,
+    day INT,
+    weekly INT,
+    monthly INT,
+    percentage INT,
+    price INT,
+    today_date TEXT
+
+);
+
+INSERT INTO stocks_coded (name,yoy,ytd,day,weekly,monthly,percentage,price,today_date)--insting th co ata
+
+ WITH yesterday AS 
+ ( SELECT * FROM stocks_cast
+WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+today AS 
+( SELECT * FROM stocks_cast
+WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
+            CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
+            CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
+            CASE WHEN t.weekly>y.weekly THEN 1 WHEN t.weekly=y.weekly THEN 0 ELSE -1 END AS weekly,
+            CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
+            CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.pecentage=y.pecentage THEN 0 ELSE -1 END AS pecentage,
+            CASE WHEN t.price>y.price THEN 1 WHEN t.price=y.price THEN 0 ELSE -1 END AS price,
+            t.today_date
+    FROM yesterday y join today t 
+    ON y.name =t.name;
+
+
+--dealing with bonds table
+CREATE TEMP TABLE bonds_cast AS
+SELECT name,CAST(yoy AS FLOAT),CAST(ytd AS FLOAT),
+ CAST(REPLACE(day, ',','') AS FLOAT) AS day,
+ CAST(weekly AS FLOAT),CAST(monthly AS FLOAT),
+ CAST(yeild AS FLOAT),today_date
+ 
+  FROM bonds;
+
+
+
+CREATE TABLE IF NOT EXISTS bonds_coded (
+    name TEXT,
+    yoy INT,
+    ytd INT,
+    day INT,
+    weekly INT,
+    monthly INT,
+   
+    yeild INT,
+    today_date TEXT
+
+);
+
+INSERT INTO bonds_coded (name,yoy,ytd,day,weekly,monthly,yeild,today_date)--insting th co ata
+
+ WITH yesterday AS 
+ ( SELECT * FROM bonds_cast
+WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+today AS 
+( SELECT * FROM bonds_cast
+WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
+            CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
+            CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
+            CASE WHEN t.weekly>y.weekly THEN 1 WHEN t.weekly=y.weekly THEN 0 ELSE -1 END AS weekly,
+            CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
+           
+            CASE WHEN t.yeild>y.yeild THEN 1 WHEN t.yeild=y.yeild THEN 0 ELSE -1 END AS yeild,
+            t.today_date
     FROM yesterday y join today t 
     ON y.name =t.name;
