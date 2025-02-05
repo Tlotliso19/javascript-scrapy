@@ -1,0 +1,28 @@
+name: Auto Commit & Push
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # Runs every 5 minutes
+  push:
+    branches:
+      - main
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Commit and Push
+        run: |
+          git add .
+          git commit -m "Automated commit: $(date)" || exit 0
+          git push origin main
