@@ -1,0 +1,16 @@
+name: Trigger CircleCI Daily
+
+on:
+  schedule:
+    - cron: "* * * * *"  # Runs daily at midnight UTC
+
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CircleCI Pipeline
+        run: |
+          curl -X POST "https://circleci.com/api/v2/project/gh/Tlotliso19/javascript-scrapy/pipeline" \
+               -H "Circle-Token: ${{ secrets.CIRCLECI_API_TOKEN }}" \
+               -H "Content-Type: application/json" \
+               -d '{"branch":"circleci-project-setup"}'
