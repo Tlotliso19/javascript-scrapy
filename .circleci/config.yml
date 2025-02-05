@@ -28,3 +28,15 @@ jobs:
           name: Run Scrapy Spider
           working_directory: three_websites/three_websites/spiders
           command: "python -m scrapy crawl financial_prices"
+
+  workflows:
+    version: 2
+    daily-scraper:
+      triggers:
+        - schedule:
+            cron: "* * * *"  # Runs every day at midnight UTC
+            filters:
+              branches:
+                only: circleci-project-setup
+      jobs:
+        - build
