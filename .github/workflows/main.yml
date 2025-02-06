@@ -2,7 +2,7 @@ name: Trigger CircleCI Daily
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Runs daily at midnight UTC
+    - cron: "* * * * *"  # Runs daily at midnight UTC
 
 jobs:
   trigger-circleci:
