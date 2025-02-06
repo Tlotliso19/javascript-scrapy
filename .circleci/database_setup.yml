@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@5.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+    steps:
+      - checkout
+     
+      - run:
+          name: Connection to the database
+          working_directory: three_websites/three_websites/spiders
+          command: psql postgresql://erik_user:vJnjEibIrqr3BkvAwmjcZdbUiFi4oXfK@dpg-ctuh0f8gph6c73eqljrg-a.oregon-postgres.render.com/erik
+      - run: 
+          name: running sql queries
+          command: \i post.sql
