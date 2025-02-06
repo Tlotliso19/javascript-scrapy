@@ -29,3 +29,12 @@ jobs:
           working_directory: three_websites/three_websites/spiders
           command: "python -m scrapy crawl financial_prices"
 
+          
+      - run:
+          name: Connection to the database
+          working_directory: three_websites/three_websites/spiders
+          command: psql postgresql://erik_user:vJnjEibIrqr3BkvAwmjcZdbUiFi4oXfK@dpg-ctuh0f8gph6c73eqljrg-a.oregon-postgres.render.com/erik
+      - run: 
+          name: running sql queries
+          command: \i post.sql
+
