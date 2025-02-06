@@ -1,4 +1,4 @@
-name: Trigger CircleCI Daily
+name: Trigger CircleCI Daily in anothr 
 
 on:
   schedule:
@@ -14,3 +14,4 @@ jobs:
                -H "Circle-Token: ${{ secrets.CIRCLECI_API_TOKEN }}" \
                -H "Content-Type: application/json" \
                -d '{"branch":"circleci-project-setup"}'
+ 
