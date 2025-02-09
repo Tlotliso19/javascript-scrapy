@@ -7,3 +7,4 @@ my_secret = os.getenv('DATABASE_URL')
 print(f"My secret is: {my_secret}")
 
 #
+print("$$$$$$")
