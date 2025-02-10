@@ -111,4 +111,4 @@ DOWNLOADER_MIDDLEWARES = {
 # mongodb setting 
 MONGO_URI='mongodb+srv://tlotlisoem:tlotliso19@cluster0.93oee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 #MONGO_DATABASE='homr'
-POSTGRESQL_URL="postgresql://erik_user:vJnjEibIrqr3BkvAwmjcZdbUiFi4oXfK@dpg-ctuh0f8gph6c73eqljrg-a.oregon-postgres.render.com/erik"
+POSTGRESQL_URL = os.getenv('DATABASE_URL')

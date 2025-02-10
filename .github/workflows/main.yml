@@ -11,6 +11,6 @@ jobs:
       - name: Trigger CircleCI Pipeline
         run: |
           curl -X POST "https://circleci.com/api/v2/project/gh/Tlotliso19/javascript-scrapy/pipeline" \
-               -H "Circle-Token: ${{ secrets.CIRCLECI_API_TOKEN }}" \
+               -H "Circle-Token: ${{ secrets.DATABASE_URL }}" \
                -H "Content-Type: application/json" \
                -d '{"branch":"circleci-project-setup"}'
