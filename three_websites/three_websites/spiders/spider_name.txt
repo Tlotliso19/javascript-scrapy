@@ -1,0 +1,3 @@
+commoditiesspider
+Yahoo_futures
+financial_prices

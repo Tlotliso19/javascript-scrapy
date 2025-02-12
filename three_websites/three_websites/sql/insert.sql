@@ -266,9 +266,9 @@ CREATE TEMP TABLE commoditiesPrices AS
     CAST (REPLACE(monthly , '%' , ' ') AS float) AS monthly,
    CAST (REPLACE(percentage , '%' , ' ') AS float) AS percentage,
   CAST(price AS float) AS price,
-  DATE(today_date) AS date from commoditiesprices LIMIT 10;
+  DATE(today_date) AS today_date from commoditiesprices;
  
-CREATE TABLE IF NOT EXISTS commodities_prices_coded (
+CREATE TABLE IF NOT EXISTS commodities_Prices_coded (
       name TEXT,
     yoy INT,
     ytd INT,
@@ -276,11 +276,10 @@ CREATE TABLE IF NOT EXISTS commodities_prices_coded (
     weekly INT,
     monthly INT,
     percentage INT,
-    price INT,
     today_date TEXT
 );
 
-INSERT INTO commodities_prices_coded (name,yoy,ytd,day,weekly,monthly,pecentage,today_date)--insting th co ata
+INSERT INTO commodities_Prices_coded (name,yoy,ytd,day,weekly,monthly,percentage,today_date)--insting th co ata
 
  WITH yesterday AS 
  ( SELECT * FROM commoditiesPrices
@@ -294,7 +293,7 @@ SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END A
             CASE WHEN t.weekly>y.weekly THEN 1 WHEN t.weekly=y.weekly THEN 0 ELSE -1 END AS weekly,
             CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
            
-            CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.yeild=y.yeild THEN 0 ELSE -1 END AS pecentage,
+            CASE WHEN t.percentage>y.percentage THEN 1 WHEN t.percentage=y.percentage THEN 0 ELSE -1 END AS percentage,
             t.today_date
     FROM yesterday y join today t 
     ON y.name =t.name;
@@ -319,3 +318,20 @@ CREATE TABLE IF NOT EXISTS yahoo_futures_coded(
     price INT,
     today_date TEXT
 );
+
+INSERT INTO yahoo_futures_coded (symbol,name,market_time,change,change_pecent,open_interest,price,today_date)--insting th co ata
+
+ WITH yesterday AS 
+ ( SELECT * FROM yahoo_futures_cast
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
+today AS 
+( SELECT * FROM yahoo_futures_cast
+WHERE DATE(today_date) = CURRENT_DATE )
+SELECT t.symbol,t.name,t.market_time,
+          CASE WHEN t.change>y.change THEN 1 WHEN t.change=y.change THEN 0 ELSE -1 END AS change,
+          CASE WHEN t.change_pecent>y.change_pecent THEN 1 WHEN t.change_pecent=y.change_pecent THEN 0 ELSE -1 END AS change_pecent,
+          CASE WHEN t.open_interest>y.open_interest THEN 1 WHEN t.open_interest=y.open_interest THEN 0 ELSE -1 END AS open_interest,
+          CASE WHEN t.price>y.price THEN 1 WHEN t.price=y.price THEN 0 ELSE -1 END AS price,
+            t.today_date
+    FROM yesterday y join today t 
+    ON y.name =t.name;

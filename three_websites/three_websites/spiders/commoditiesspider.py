@@ -42,7 +42,7 @@ class CommoditiesspiderSpider(scrapy.Spider):
                     comodities_prices['today_date']=today_date
                     yield comodities_prices
         else:
-            yield{
-                'nothing':'there is nothing'
-            }
+            pass
+            ##yield{
+                ##'nothing':'there is nothing'}
 

@@ -230,6 +230,9 @@ class SaveToPostgresql:
             self.conn.close()
 
     def process_item(self, item, spider):
+        if isinstance(item,dict):
+            print('*******************$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*******************************')
+            print(item)
         # Dynamically get the item class name
         name = type(item).__name__
 
