@@ -1,5 +1,12 @@
 import scrapy
 from three_websites.items import YahooFutures
+from datetime import datetime, timedelta
+
+today = datetime.now() 
+
+yesterday= today-timedelta(days=1)
+today_date=today.strftime('%Y/%m/%d')
+
 
 
 class YahooFuturesSpider(scrapy.Spider):
@@ -24,16 +31,17 @@ class YahooFuturesSpider(scrapy.Spider):
             open_interest_index = row.css('td:nth-child(9) span::text').getall()  # Seventh column
     
             for symbol,name,price,market_time,change,change_pecent,volume,open_interest in zip(symbol_index,name_index,price_index,market_time_index,change_index,change_pecent_index,volume_index,open_interest_index):
-                 yahoo_futures['symbol']=symbol
-                 yahoo_futures['name']=name
-                 yahoo_futures['price']=price
-                 yahoo_futures['market_time']=market_time
-                 yahoo_futures['change']=change
-                 yahoo_futures['change_pecent']=change_pecent
-                 yahoo_futures['volume']=volume
-                 yahoo_futures['open_interest']=open_interest
+                yahoo_futures['symbol']=symbol
+                yahoo_futures['name']=name
+                yahoo_futures['price']=price
+                yahoo_futures['market_time']=market_time
+                yahoo_futures['change']=change
+                yahoo_futures['change_pecent']=change_pecent
+                yahoo_futures['volume']=volume
+                yahoo_futures['open_interest']=open_interest
+                yahoo_futures['today_date']=today_date
 
-                 yield yahoo_futures
+                yield yahoo_futures
        
 
           

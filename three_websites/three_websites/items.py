@@ -25,6 +25,7 @@ class YahooFutures(scrapy.Item):
         change_pecent= scrapy.Field(serializer=str)
         volume=scrapy.Field(serializer=str)
         open_interest=scrapy.Field(serializer=str)
+        today_date= scrapy.Field(serializer=str)
 
 
 class GeneralEconomics(scrapy.Item):

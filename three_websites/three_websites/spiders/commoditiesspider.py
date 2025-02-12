@@ -1,5 +1,11 @@
 import scrapy
 from three_websites.items import CommoditiesPrices
+from datetime import datetime, timedelta
+
+today = datetime.now() 
+
+yesterday= today-timedelta(days=1)
+today_date=today.strftime('%Y/%m/%d')
 
 
 class CommoditiesspiderSpider(scrapy.Spider):
@@ -33,6 +39,7 @@ class CommoditiesspiderSpider(scrapy.Spider):
                     comodities_prices['YTD']=YTD.strip()
                     comodities_prices['YOY']=YOY.strip()
                     comodities_prices['date']=date.strip()
+                    comodities_prices['today_date']=today_date
                     yield comodities_prices
         else:
             yield{

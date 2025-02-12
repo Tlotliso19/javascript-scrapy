@@ -21,6 +21,70 @@ from pymongo import MongoClient
 # Get today's date
 today_date = datetime.date.today()
 
+class YahooFutures:
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        
+        # Check if 'open_interest' exists
+        if adapter.get('open_interest'):
+
+            open_interest = adapter['open_interest']
+            
+            # Check if the 'open_interest' value contains 'M' for millions
+            if 'M' in open_interest:
+                print('*********************************************************************')
+                print('M  EXCISITS')
+                try:
+                    # Remove 'M' and convert to float, then multiply by 10 million
+                    adapter['open_interest'] = float(adapter['open_interest'].strip('M')) * 1000000
+                    print(adapter['open_interest'])
+                except ValueError:
+                    # Handle case where conversion fails
+                    adapter['open_interest'] = None
+                    spider.logger.error(f"Invalid open_interest value: {open_interest}")
+            
+            # Handle other units like 'B' for billions if needed
+            elif 'B' in open_interest:
+                try:
+                    # Remove 'B' and convert to float, then multiply by 1 billion
+                    adapter['open_interest'] = float(open_interest.strip('B')) * 1000000000
+                except ValueError:
+                    adapter['open_interest'] = None
+                    spider.logger.error(f"Invalid open_interest value: {open_interest}")
+
+          # Check if 'volumnt exists
+        if adapter.get('volume'):
+
+            volume=adapter['volume']
+            
+            # Check if the 'open_interest' value contains 'M' for millions
+            if 'M' in volume:
+                print('*********************************************************************')
+                print('M  EXCISITS')
+                try:
+                    # Remove 'M' and convert to float, then multiply by 10 million
+                    adapter['volume']= float(adapter['open_interest'].strip('M')) * 1000000
+                    print(adapter['volume'])
+                except ValueError:
+                    # Handle case where conversion fails
+                    adapter['volume'] = None
+                    spider.logger.error(f"Invalid open_interest value: {volume}")
+            
+            # Handle other units like 'B' for billions if needed
+            elif 'B' in volume:
+                try:
+                    # Remove 'B' and convert to float, then multiply by 1 billion
+                    adapter['volume'] = float(open_interest.strip('B')) * 1000000000
+                except ValueError:
+                    adapter['volume']=None
+                    spider.logger.error(f"Invalid open_interest value: {volume}")
+        return item
+
+
+
+
+
+
 
 
 class ThreeWebsitesPipeline:

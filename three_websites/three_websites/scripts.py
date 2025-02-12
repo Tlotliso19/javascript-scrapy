@@ -1,11 +1,2 @@
-import os
-
-# Access the secret stored in the environment variable
-my_secret = os.getenv('DATABASE_URL')
-
-# Use the secret (e.g., print or make an API call)
-print(f"My secret is: {my_secret}")
-
-API_KEY='xau_L9zPEHvPkEIbsOJxRSZN8BHchfAgDq640'
-DATABASE_URL='postgresql://7ni00r:xau_L9zPEHvPkEIbsOJxRSZN8BHchfAgDq640@us-east-1.sql.xata.sh/home:main?sslmode=require'
-print("$$$$$$")
+xata_database_url= "postgresql://7ni00r:xau_nxRdglzF9RpvVFEmrO2RZw288Om9vDht2@us-east-1.sql.xata.sh/home:main?sslmode=require"
+tembo_database_url= 'postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres'

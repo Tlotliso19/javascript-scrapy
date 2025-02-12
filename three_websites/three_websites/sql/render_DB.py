@@ -1,7 +1,9 @@
 import psycopg2
 from urllib.parse import urlparse
+import os
 
-connection_string = "postgresql://erik_user:vJnjEibIrqr3BkvAwmjcZdbUiFi4oXfK@dpg-ctuh0f8gph6c73eqljrg-a.oregon-postgres.render.com/erik"
+connection_string ="postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres"
+#= os.getenv("DATABASE_URL")
 
 
 import psycopg2

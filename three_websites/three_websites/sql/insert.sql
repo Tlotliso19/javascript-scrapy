@@ -25,10 +25,10 @@ INSERT INTO  crypto_cap_coded  (name,yoy,ytd,day,market_cap,weekly,monthly,perce
 
  WITH yesterday AS 
  ( SELECT * FROM crypto_cap
-WHERE DATE(today_date,) = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM crypto_cap 
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT y.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy = y.yoy THEN 0 ELSE -1 END AS yoy_coded,
 CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd = y.ytd THEN 0 ELSE -1 END AS ytd_coded,
 CASE WHEN t.day>y.day THEN 1 WHEN t.day = y.day THEN 0 ELSE -1 END AS day_coded,
@@ -70,10 +70,10 @@ INSERT INTO crypto_coded (name,yoy,ytd,day,weekly,monthly,percentage,price,today
 
  WITH yesterday AS 
  ( SELECT * FROM crypto
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM crypto
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
             CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
             CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
@@ -112,10 +112,10 @@ INSERT INTO comodities_coded (name,yoy,ytd,day,weekly,monthly,percentage,price,t
 
  WITH yesterday AS 
  ( SELECT * FROM comodities_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM comodities_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
             CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
             CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
@@ -153,10 +153,10 @@ INSERT INTO currencies_coded (name,yoy,ytd,day,weekly,monthly,percentage,price,t
 
  WITH yesterday AS 
  ( SELECT * FROM currencies_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM currencies_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
             CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
             CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
@@ -197,10 +197,10 @@ INSERT INTO stocks_coded (name,yoy,ytd,day,weekly,monthly,percentage,price,today
 
  WITH yesterday AS 
  ( SELECT * FROM stocks_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM stocks_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
             CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
             CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
@@ -241,10 +241,10 @@ INSERT INTO bonds_coded (name,yoy,ytd,day,weekly,monthly,yeild,today_date)--inst
 
  WITH yesterday AS 
  ( SELECT * FROM bonds_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE - INTERVAL '1 day'),
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
 today AS 
 ( SELECT * FROM bonds_cast
-WHERE TO_DATE(today_date,'YYYY-MM-DD') = CURRENT_DATE )
+WHERE DATE(today_date) = CURRENT_DATE )
 SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
             CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
             CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
@@ -255,3 +255,67 @@ SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END A
             t.today_date
     FROM yesterday y join today t 
     ON y.name =t.name;
+
+
+--dealing with commoditiesPrices table 
+CREATE TEMP TABLE commoditiesPrices AS 
+  SELECT name, CAST (REPLACE(yoy , '%' , ' ') AS float) AS yoy, 
+   CAST (REPLACE(ytd, '%' , ' ') AS float) AS ytd,  
+    CAST (REPLACE(day , '%' , ' ') AS float) AS day,
+    CAST (REPLACE(weekly, '%' , ' ') AS float)  AS weekly,
+    CAST (REPLACE(monthly , '%' , ' ') AS float) AS monthly,
+   CAST (REPLACE(percentage , '%' , ' ') AS float) AS percentage,
+  CAST(price AS float) AS price,
+  DATE(today_date) AS date from commoditiesprices LIMIT 10;
+ 
+CREATE TABLE IF NOT EXISTS commodities_prices_coded (
+      name TEXT,
+    yoy INT,
+    ytd INT,
+    day INT,
+    weekly INT,
+    monthly INT,
+    percentage INT,
+    price INT,
+    today_date TEXT
+);
+
+INSERT INTO commodities_prices_coded (name,yoy,ytd,day,weekly,monthly,pecentage,today_date)--insting th co ata
+
+ WITH yesterday AS 
+ ( SELECT * FROM commoditiesPrices
+WHERE DATE(today_date) = CURRENT_DATE - INTERVAL '1 day'),
+today AS 
+( SELECT * FROM commoditiesPrices
+WHERE DATE(today_date) = CURRENT_DATE )
+SELECT t.name,CASE WHEN t.yoy>y.yoy THEN 1 WHEN t.yoy=y.yoy THEN 0 ELSE -1 END AS yoy,
+            CASE WHEN t.ytd>y.ytd THEN 1 WHEN t.ytd=y.ytd THEN 0 ELSE -1 END AS ytd,
+            CASE WHEN t.day>y.day THEN 1 WHEN t.day=y.day THEN 0 ELSE -1 END AS day,
+            CASE WHEN t.weekly>y.weekly THEN 1 WHEN t.weekly=y.weekly THEN 0 ELSE -1 END AS weekly,
+            CASE WHEN t.monthly>y.monthly THEN 1 WHEN t.monthly=y.monthly THEN 0 ELSE -1 END AS monthly,
+           
+            CASE WHEN t.pecentage>y.pecentage THEN 1 WHEN t.yeild=y.yeild THEN 0 ELSE -1 END AS pecentage,
+            t.today_date
+    FROM yesterday y join today t 
+    ON y.name =t.name;
+
+-- dealing with yahoo_futures table
+
+CREATE TEMP TABLE yahoo_futures_cast AS    SELECT symbol,name,market_time,
+    CAST(REPLACE(volume, ',', '') AS INT) AS volume,
+      CAST(REPLACE(change, ',', '') AS float) AS change,
+    CAST(REPLACE(change_pecent, '%', '') AS float) AS change_pecent,
+    CAST(REPLACE(open_interest,',','') AS float) AS open_interest,
+    CAST(REPLACE(price,',','') AS float) AS price,
+    DATE(today_date) AS today_date
+    FROM yahoofutures LIMIT 10;
+CREATE TABLE IF NOT EXISTS yahoo_futures_coded(
+  symbol TEXT,
+      name TEXT,
+  market_time TEXT,
+    change INT,
+    change_pecent INT,
+    open_interest INT,
+    price INT,
+    today_date TEXT
+);

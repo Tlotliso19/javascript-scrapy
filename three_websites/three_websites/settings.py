@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = "three_websites"
 
@@ -67,7 +68,9 @@ ITEM_PIPELINES = {
   #  "three_websites.pipelines.CustomSave":200,
    #"three_websites.pipelines.SaveToMongoDB": 300,
 #    "three_websites.pipelines.ThreeWebsitesPipeline": 300,
-"three_websites.pipelines.SaveToPostgresql":300,
+    "three_websites.pipelines.YahooFutures":200,
+    "three_websites.pipelines.SaveToPostgresql":300,
+
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -111,4 +114,5 @@ DOWNLOADER_MIDDLEWARES = {
 # mongodb setting 
 MONGO_URI='mongodb+srv://tlotlisoem:tlotliso19@cluster0.93oee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 #MONGO_DATABASE='homr'
-POSTGRESQL_URL = os.getenv('DATABASE_URL')
+POSTGRESQL_URL = 'postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres'
+hroros=os.getenv('DATABASE_URL')
