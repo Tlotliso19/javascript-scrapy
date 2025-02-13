@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  win: circleci/windows@5.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+    steps:
+      - checkout
+      - run:
+          name: Run Scrapy Spider financial_prices
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl financial_prices"
+
+      - run:
+          name: Run Scrapy Spider commoditiesprices
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl commoditiesspider"
+
+      - run:
+          name: Run Scrapy Spider Yahoofutures
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl Yahoo_futures"

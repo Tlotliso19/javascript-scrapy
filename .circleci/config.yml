@@ -10,6 +10,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install PostgreSQL using Chocolatey
+          command: |
+            choco install postgresql --version=13.3 -y
+            # Verify installation
+            psql --version
+      - run:
           name: Checking the working directory
           command: "dir"
       - run:
@@ -24,17 +30,4 @@ jobs:
       - run:
           name: Install dependencies
           command: "pip install -r requirements.txt"
-      - run:
-          name: Run Scrapy Spider financial_prices
-          working_directory: three_websites/three_websites/spiders
-          command: "python -m scrapy crawl financial_prices"
-
-      - run:
-          name: Run Scrapy Spider commoditiesprices
-          working_directory: three_websites/three_websites/spiders
-          command: "python -m scrapy crawl commoditiesspider"
-
-      - run:
-          name: Run Scrapy Spider Yahoofutures
-          working_directory: three_websites/three_websites/spiders
-          command: "python -m scrapy crawl Yahoo_futures"
+     

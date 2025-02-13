@@ -11,13 +11,7 @@ jobs:
       - checkout
       - win/setup_remote_docker:
           version: "19.03.12"
-      - run:
-          name: Install PostgreSQL using Chocolatey
-          command: |
-            choco install postgresql --version=13.3 -y
-            # Verify installation
-            psql --version
-
+          
       - run: 
           name: connect to database
           working_directory: three_websites/three_websites/sql
