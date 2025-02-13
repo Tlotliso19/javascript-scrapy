@@ -29,9 +29,10 @@ jobs:
           working_directory: three_websites/three_websites/spiders
           command: "python -m scrapy crawl financial_prices"
 
-      - run: 
-          name: install posgresql
-          command: apt install postgresql
+      - run:
+          name: install posqgress
+          command: sudo apt install -y postgresql
+          shell: bash
 
       - run: 
           name: check psql version
