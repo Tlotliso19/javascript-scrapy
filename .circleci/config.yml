@@ -32,9 +32,9 @@ jobs:
       - run:
           name: Run Scrapy Spider commoditiesprices
           working_directory: three_websites/three_websites/spiders
-          command: "python -m scrapy crawl commoditiesprices"
+          command: "python -m scrapy crawl commoditiesspider"
 
       - run:
           name: Run Scrapy Spider Yahoofutures
           working_directory: three_websites/three_websites/spiders
-          command: "python -m scrapy crawl Yahoofutures"
+          command: "python -m scrapy crawl Yahoo_futures"
