@@ -25,25 +25,16 @@ jobs:
           name: Install dependencies
           command: "pip install -r requirements.txt"
       - run:
-          name: Run Scrapy Spider
+          name: Run Scrapy Spider financial_prices
           working_directory: three_websites/three_websites/spiders
           command: "python -m scrapy crawl financial_prices"
 
       - run:
-          name: install posqgress
-          command: apt install -y postgresql
-          shell: bash
+          name: Run Scrapy Spider commoditiesprices
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl commoditiesprices"
 
-      - run: 
-          name: check psql version
-          command: psql --version
-
-          
       - run:
-          name: Connection to the database
-          working_directory: three_websites/three_websites/sql
-          command: psql postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres
-      - run: 
-          name: running sql queries
-          command: \i insert.sql
-
+          name: Run Scrapy Spider Yahoofutures
+          working_directory: three_websites/three_websites/spiders
+          command: "python -m scrapy crawl Yahoofutures"

@@ -4,16 +4,30 @@ orbs:
   win: circleci/windows@5.0
 
 jobs:
-  build:
+  install_postgresql:
     executor:
-      name: win/default
+      name: win/windows-server-2019
     steps:
       - checkout
-     
+      - win/setup_remote_docker:
+          version: "19.03.12"
       - run:
-          name: Connection to the database
-          working_directory: three_websites/three_websites/spiders
-          command: psql postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres
+          name: Install PostgreSQL using Chocolatey
+          command: |
+            choco install postgresql --version=13.3 -y
+            # Verify installation
+            psql --version
+
       - run: 
-          name: running sql queries
-          command: \i post.sql
+          name: connect to database
+          working_directory: three_websites/three_websites/sql
+          command: |
+              psql postgresql://postgres:BSwtGv4AvaKvoYJD@quarterly-prominent-seagull.data-1.use1.tembo.io:5432/postgres'
+              # Inserting into the database
+              \i insert.sql;
+
+workflows:
+  version: 2
+  install_postgresql_workflow:
+    jobs:
+      - install_postgresql
