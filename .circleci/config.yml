@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Install PostgreSQL using Chocolatey
           command: |
-            choco install postgresql --version=13.3 -y
+            choco install postgresql --version=17.0 -y
             # Verify installation
             psql --version
       - run:
