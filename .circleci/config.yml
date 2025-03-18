@@ -31,7 +31,7 @@ jobs:
 
       - run:
           name: enter spql teminal
-            working_directory: three_websites/three_websites/sql
+          working_directory: three_websites/three_websites/sql
           command: |
               psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
               # Inserting into the database
