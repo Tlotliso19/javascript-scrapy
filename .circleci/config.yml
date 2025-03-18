@@ -9,43 +9,9 @@ jobs:
       name: win/default
     steps:
       - checkout
-
-
-      - name: Run the pgdg script to set up PostgreSQL repository
-        shell: /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
-        args:
-          creates: /etc/apt/sources.list.d/pgdg.list
-
-      - name: Install curl and ca-certificates
-        apt:
-          name:
-            - curl
-            - ca-certificates
-          state: present
-
-      - name: Install the postgresql key
-        shell: curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
-        args:
-          creates: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
-
-      - name: Add PostgreSQL repository to sources.list
-        shell: |
-          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-        args:
-          creates: /etc/apt/sources.list.d/pgdg.list
-
-      - name: Update apt cache
-        apt:
-          update_cache: yes
-
-      - name: Install PostgreSQL
-        apt:
-          name: postgresql
-          state: present
-          install_recommends: yes
-
-
-
+      - run:
+          name: install posgrsql
+          command: apt install postgresql
 
       - run:
           name: Checking the working directory
@@ -62,4 +28,13 @@ jobs:
       - run:
           name: Install dependencies
           command: "pip install -r requirements.txt"
+
+      - run:
+          name: enter spql teminal
+            working_directory: three_websites/three_websites/sql
+          command: |
+              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+              # Inserting into the database
+              \i insert.sql;
+
      
