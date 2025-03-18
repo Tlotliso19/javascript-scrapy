@@ -1,44 +1,23 @@
-
-
-
 version: 2.1
-
-orbs:
-  win: circleci/windows@5.0
 
 jobs:
   build:
-    executor:
-      name: win/default
+    docker:
+      - image: circleci/python:3.8  # You can choose the image you prefer
     steps:
       - checkout
       - run:
-          name: install posgrsql
-          type: bash
-          command: bash sudo_requirements.txt
-
-      - run:
-          name: Checking the working directory
-          command: "dir"
-      - run:
-          name: Verify Python Installation
-          command: "python --version"
-      - run:
-          name: Ensure pip is installed
-          command: "python -m ensurepip"
-      - run:
-          name: Upgrade pip
-          command: "python -m pip install --upgrade pip"
-      - run:
-          name: Install dependencies
-          command: "pip install -r requirements.txt"
-
-      - run:
-          name: enter spql teminal
-          working_directory: three_websites/three_websites/sql
+          name: Install PostgreSQL and dependencies from sudo_requirements.txt
           command: |
-              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
-              # Inserting into the database
-              \i insert.sql;
+            # Make sure the file is in the repo
+            cat sudo_requirements.txt | sudo bash
+      - run:
+          name: Install Python dependencies
+          command: |
+            pip install -r requirements.txt
 
-    
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
