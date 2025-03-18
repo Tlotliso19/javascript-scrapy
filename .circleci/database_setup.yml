@@ -25,3 +25,43 @@ workflows:
   install_postgresql_workflow:
     jobs:
       - install_postgresql
+
+
+version: 2.1
+
+orbs:
+  win: circleci/windows@5.0
+
+jobs:
+  build:
+    executor:
+      name: win/default
+    steps:
+      - checkout
+      - run:
+          name: install posgrsql
+          command: apt install postgresql
+
+      - run:
+          name: Checking the working directory
+          command: "dir"
+      - run:
+          name: Verify Python Installation
+          command: "python --version"
+      - run:
+          name: Ensure pip is installed
+          command: "python -m ensurepip"
+      - run:
+          name: Upgrade pip
+          command: "python -m pip install --upgrade pip"
+      - run:
+          name: Install dependencies
+          command: "pip install -r requirements.txt"
+
+      - run:
+          name: enter spql teminal
+          working_directory: three_websites/three_websites/sql
+          command: |
+              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+              # Inserting into the database
+              \i insert.sql;
