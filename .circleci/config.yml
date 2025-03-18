@@ -15,10 +15,8 @@ jobs:
           name: Install PostgreSQL and dependencies from sudo_requirements.txt
           command: |
             # Make sure the file is in the repo
-             # cat sudo_requirements.txt | sudo bash
-            sudo apt-get update
-            sudo apt-get install -y postgresql postgresql-contrib
-            sudo apt-get install -y libpq-dev
+             cat sudo_requirements.txt | sudo bash
+            
       - run:
           name: check installed PostgreSQL version
           command: psql --version
