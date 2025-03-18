@@ -27,9 +27,9 @@ jobs:
           command: "pip install -r requirements.txt"
 
       - run:
-        name: run daily python scrapy scripts
-        working_directory: "three_websites/three_websites/spiders"
-        command: |
+          name: run daily python scrapy scripts
+          working_directory: "three_websites/three_websites/spiders"
+          command: |
               scrapy crawl commoditiesspider
               scrapy crawl financial_prices
               scrapy crawl Yahoo_futures
