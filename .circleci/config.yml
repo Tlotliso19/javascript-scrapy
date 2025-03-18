@@ -12,6 +12,9 @@ jobs:
             # Make sure the file is in the repo
             cat sudo_requirements.txt | sudo bash
       - run:
+          name: check installed PostgreSQL version
+          command: psql --version
+      - run:
           name: Install Python dependencies
           command: |
             pip install -r requirements.txt
