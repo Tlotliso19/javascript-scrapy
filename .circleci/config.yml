@@ -1,13 +1,13 @@
  version: 2.1
 
  orbs:
-   win: circleci/node@7.1.o
+    win: circleci/node@7.1.o
 
  jobs:
-   build_and_test:
-   executor: node/default
+    build_and_test:
+    executor: node/default
  
-   steps:
+    steps:
      - checkout
      - node/install-packages:
           pkg-manager: npm
