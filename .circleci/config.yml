@@ -33,5 +33,11 @@ jobs:
               scrapy crawl commoditiesspider
               scrapy crawl financial_prices
               scrapy crawl Yahoo_futures
+
+      - run:
+          name: enter spql teminal
+          working_directory: three_websites/three_websites/sql
+          command: |
+              psql --version
         
 
