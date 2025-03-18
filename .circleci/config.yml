@@ -16,6 +16,25 @@ jobs:
           command: |
             pip install -r requirements.txt
 
+      - run:
+          name: run daily python scrapying script
+          working_directory: three_websites/three_websites/spiders
+          command: | 
+                    scrapy  crawl commoditiesspider 
+                    scrapy  crawl financial_prices
+                    scrapy  crawl commoditiesspider
+                    scrapy  crawl commoditiesspider 
+                    scrapy  crawl Yahoo_futures  
+
+      - run:
+          name: enter spql teminal
+          working_directory: three_websites/three_websites/sql
+          command: |
+              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+              # Inserting into the database
+              \i insert.sql;
+
+
 workflows:
   version: 2
   build:

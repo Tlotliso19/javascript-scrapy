@@ -189,7 +189,7 @@ class SaveToMongoDB:
 
 class SaveToPostgresql:
     def __init__(self,PostgreSQL_url):
-        self.connection_string=PostgreSQL_url
+        self.connection_string='postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
         self.name_set = set()  # To track processed item classes
 
 
