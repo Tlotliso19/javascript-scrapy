@@ -1,51 +1,37 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@5.0
+
 jobs:
   build:
-    docker:
-      - image: circleci/python:3.8  # You can choose the image you prefer
+    executor:
+      name: win/default
     steps:
       - checkout
-      - run: 
-          name: check linux is running
-          command: uname -a
-
-          
-      - run:
-          name: Install PostgreSQL and dependencies from sudo_requirements.txt
-          command: |
-            # Make sure the file is in the repo
-             cat sudo_requirements.txt | sudo bash
-            
-      - run:
-          name: check installed PostgreSQL version
-          command: psql --version
-      - run:
-          name: Install Python dependencies
-          command: |
-            pip install -r requirements.txt
 
       - run:
-          name: run daily python scrapying script
-          working_directory: three_websites/three_websites/spiders
-          command: | 
-                    scrapy  crawl commoditiesspider 
-                    scrapy  crawl financial_prices
-                    scrapy  crawl commoditiesspider
-                    scrapy  crawl commoditiesspider 
-                    scrapy  crawl Yahoo_futures  
+          name: Checking the working directory
+          command: "dir"
+      - run:
+          name: Verify Python Installation
+          command: "python --version"
+      - run:
+          name: Ensure pip is installed
+          command: "python -m ensurepip"
+      - run:
+          name: Upgrade pip
+          command: "python -m pip install --upgrade pip"
+      - run:
+          name: Install dependencies
+          command: "pip install -r requirements.txt"
 
       - run:
-          name: enter spql teminal
-          working_directory: three_websites/three_websites/sql
-          command: |
-              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
-              # Inserting into the database
-              \i insert.sql;
+        name: run daily python scrapy scripts
+        working_directory: three_websites/three_websites/spiders
+        command: |
+              scrapy crawl commoditiesspider
+              scrapy crawl financial_prices
+              scrapy crawl Yahoo_futures
+        
 
-
-workflows:
-  version: 2
-  build:
-    jobs:
-      - build
