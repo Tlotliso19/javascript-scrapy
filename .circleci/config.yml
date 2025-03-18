@@ -14,6 +14,7 @@ jobs:
       - checkout
       - run:
           name: install posgrsql
+          type: bash
           command: bash sudo_requirements.txt
 
       - run:
