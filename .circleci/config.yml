@@ -6,6 +6,11 @@ jobs:
       - image: circleci/python:3.8  # You can choose the image you prefer
     steps:
       - checkout
+      - run: 
+          name: check linux is running
+          command: uname -a
+
+          
       - run:
           name: Install PostgreSQL and dependencies from sudo_requirements.txt
           command: |
