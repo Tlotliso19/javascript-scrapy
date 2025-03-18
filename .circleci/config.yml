@@ -28,7 +28,7 @@
 version: 2.1
 
 jobs:
-  build_and_test:
+  build:
     executor: node/default  # Adjust if needed
     steps:
       - checkout
