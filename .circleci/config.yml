@@ -1,52 +1,47 @@
+workflows:
+  version: 2
+  install_postgresql_workflow:
+    jobs:
+      - install_postgresql
 
- version: 2.1
 
- jobs:
-   build:
-     docker:
-       - image: circleci/python:3.8  # Using an official Python Docker image for the job
-     steps:
-       - checkout
+version: 2.1
 
-       # Install PostgreSQL using apt
-       - run:
-           name: Install PostgreSQL
-           command: |
-             sudo apt-get update
-             sudo apt-get install -y postgresql postgresql-contrib
+orbs:
+  win: circleci/windows@5.0
 
-       # Checking the working directory
-       - run:
-           name: Checking the working directory
-           command: "ls -alh"
+jobs:
+  build:
+    executor:
+      name: win/default
+    steps:
+      - checkout
+      - run:
+          name: install posgrsql
+          command: bash sudo_requirements.txt
 
-      # Verify Python Installation
-       - run:
-           name: Verify Python Installation
-           command: "python --version"
+      - run:
+          name: Checking the working directory
+          command: "dir"
+      - run:
+          name: Verify Python Installation
+          command: "python --version"
+      - run:
+          name: Ensure pip is installed
+          command: "python -m ensurepip"
+      - run:
+          name: Upgrade pip
+          command: "python -m pip install --upgrade pip"
+      - run:
+          name: Install dependencies
+          command: "pip install -r requirements.txt"
 
-       # Ensure pip is installed
-       - run:
-           name: Ensure pip is installed
-           command: "python -m ensurepip"
+      - run:
+          name: enter spql teminal
+          working_directory: three_websites/three_websites/sql
+          command: |
+              psql 'postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+              # Inserting into the database
+              \i insert.sql;
 
-       # Upgrade pip
-       - run:
-           name: Upgrade pip
-           command: "python -m pip install --upgrade pip"
-
-       # Install dependencies
-       - run:
-           name: Install dependencies
-           command: "pip install -r requirements.txt"
-
-       # Connect to PostgreSQL and run the SQL script
-       - run:
-           name: Enter PostgreSQL terminal and execute SQL script
-           command: |
-             # Ensure PostgreSQL service is running
-             sudo service postgresql start
-
-             # Run the PostgreSQL command and execute SQL script
-             psql "postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres" -f three_websites/three_websites/sql/insert.sql
     
