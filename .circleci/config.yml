@@ -1,61 +1,27 @@
- #version: 2.1
+ version: 2.1
 
- #orbs:
- #  win: circleci/node@7.1.o
+ orbs:
+   win: circleci/node@7.1.o
 
- #jobs:
- #  build_and_test:
- #  executor: node/default
- #
- #  steps:
- #    - checkout
- #    - node/install-packages:
- #        pkg-manager: npm
- #    
- #    - run:
- #        command: npm run tests
- #        name: run tests
- #
- #    - run: 
- #        command: bash sudo_requirements.txt
- #        name: download postgresql
- #    - run: 
- #        command: psql --version
- #        name: check psql version
+ jobs:
+   build_and_test:
+   executor: node/default
+ 
+   steps:
+     - checkout
+     - node/install-packages:
+          pkg-manager: npm
+     
+     - run:
+          command: npm run tests
+          name: run tests
+ 
+     - run: 
+          command: bash sudo_requirements.txt
+          name: download postgresql
+     - run: 
+          command: psql --version
+          name: check psql version
         
 
 
-version: 2.1
-
-jobs:
-  build:
-    executor: node/default  # Adjust if needed
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-
-      - run:
-          command: npm run tests
-          name: run tests
-
-      # Correct the installation steps for your requirements file
-      - run:
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y postgresql
-          name: install postgresql
-
-      # This line needs to be fixed:
-      - run:
-          command: |
-            if [ -f "sudo_requirements.txt" ]; then
-              bash sudo_requirements.txt
-            else
-              echo "File sudo_requirements.txt does not exist"
-            fi
-          name: run sudo_requirements.txt script
-
-      - run:
-          command: psql --version
-          name: check psql version
