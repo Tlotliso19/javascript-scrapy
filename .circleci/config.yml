@@ -28,7 +28,7 @@ jobs:
 
       - run:
         name: run daily python scrapy scripts
-        working_directory: three_websites/three_websites/spiders
+        working_directory: "three_websites/three_websites/spiders"
         command: |
               scrapy crawl commoditiesspider
               scrapy crawl financial_prices
