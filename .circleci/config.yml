@@ -1,8 +1,4 @@
-workflows:
-  version: 2
-  install_postgresql_workflow:
-    jobs:
-      - install_postgresql
+
 
 
 version: 2.1
