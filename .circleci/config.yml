@@ -1,27 +1,27 @@
  version: 2.1
 
  orbs:
-    win: circleci/node@7.1.o
+    node: circleci/node@7.1.o
 
  jobs:
     build_and_test:
-    executor: node/default
+      executor: node/default
  
-    steps:
-     - checkout
-     - node/install-packages:
-          pkg-manager: npm
+      steps:
+        - checkout
+        - node/install-packages:
+            pkg-manager: npm
      
-     - run:
-          command: npm run tests
-          name: run tests
+        - run:
+            command: npm run tests
+            name: run tests
  
-     - run: 
-          command: bash sudo_requirements.txt
-          name: download postgresql
-     - run: 
-          command: psql --version
-          name: check psql version
+        - run: 
+            command: bash sudo_requirements.txt
+            name: download postgresql
+        - run: 
+            command: psql --version
+            name: check psql version
         
 
 
