@@ -2,41 +2,30 @@
 
 
 
-version: 2.1
+ version: 2.1
 
-orbs:
-  win: circleci/windows@5.0
+ orbs:
+    node: circleci/node@7.1.0
 
-jobs:
-  build:
-    executor:
-      name: win/default
-    steps:
-      - checkout
-
-      - run:
-          name: Checking the working directory
-          command: "dir"
-      - run:
-          name: Verify Python Installation
-          command: "python --version"
-      - run:
-          name: Ensure pip is installed
-          command: "python -m ensurepip"
-      - run:
-          name: Upgrade pip
-          command: "python -m pip install --upgrade pip"
-      - run:
-          name: Install dependencies
-          command: "pip install -r requirements.txt"
-
-      - run:
-          name: run daily python scrapy scripts
-          working_directory: "three_websites/three_websites/spiders"
-          command: |
-              scrapy crawl commoditiesspider
-              scrapy crawl financial_prices
-              scrapy crawl Yahoo_futures
+ jobs:
+    build:
+      executor: node/default
+ 
+      steps:
+        - checkout
+        - node/install-packages:
+            pkg-manager: npm
+     
+        - run:
+            command: npm run tests
+            name: run tests
+ 
+        - run: 
+            command: bash sudo_requirements.txt
+            name: download postgresql
+        - run: 
+            command: psql --version
+            name: check psql version
 
       - run:
           name: enter spql teminal

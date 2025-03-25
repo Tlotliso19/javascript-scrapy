@@ -17,9 +17,11 @@ from urllib.parse import urlparse
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-
+settings=get_project_settings()
 # Get today's date
 today_date = datetime.date.today()
+DATABASE_URL = settings.get('POSTGRESQL_URL')
+
 
 class YahooFutures:
     def process_item(self, item, spider):
@@ -122,7 +124,7 @@ class GeneralEconomicsCleaner:
     
 
 
-mongo_uri='mongodb+srv://tlotlisoem:tlotliso19@cluster0.93oee.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+
 
 
 #from pymongo.errors import ConnectionError, OperationFailure
@@ -189,7 +191,9 @@ class SaveToMongoDB:
 
 class SaveToPostgresql:
     def __init__(self,PostgreSQL_url):
-        self.connection_string='postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+        #self.connection_string='postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
+        self.connection_string=DATABASE_URL 
+        
         self.name_set = set()  # To track processed item classes
 
 
