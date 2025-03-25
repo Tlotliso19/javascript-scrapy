@@ -21,7 +21,8 @@ settings=get_project_settings()
 # Get today's date
 today_date = datetime.date.today()
 DATABASE_URL = settings.get('POSTGRESQL_URL')
-
+print("*************************&&&&&&&&&&&&&&&&&&&&&&&&&&**************************************")
+print('DATABASE_URL: ',DATABASE_URL)
 
 class YahooFutures:
     def process_item(self, item, spider):
