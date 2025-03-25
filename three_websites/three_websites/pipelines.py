@@ -191,19 +191,19 @@ class SaveToMongoDB:
 
 
 class SaveToPostgresql:
-    def __init__(self,PostgreSQL_url):
+    def __init__(self):
         #self.connection_string='postgresql://postgres:hFDuugXn18Z3DBc8@inscrutably-distinct-garpike.data-1.use1.tembo.io:5432/postgres'
-        self.connection_string=DATABASE_URL 
+        self.connection_string=settings.get('SUPABASE_URL')
         
         self.name_set = set()  # To track processed item classes
 
-
+    '''
     @classmethod
     def from_crawler(cls,spider):
         return cls(
             PostgreSQL_url=spider.settings.get("POSTGRESQL_URL"),
             
-        )
+        ) '''
 
 
     def open_spider(self, spider):

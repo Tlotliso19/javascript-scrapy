@@ -118,3 +118,4 @@ MONGO_URI=os.getenv("MONGO_URI")
 #MONGO_DATABASE='homr'
 POSTGRESQL_URL = os.getenv("POSTGRESQL_URL")
 hroros=os.getenv('DATABASE_URL')
+SUPABASE_URL=os.getenv('SUPABASE_URL')
