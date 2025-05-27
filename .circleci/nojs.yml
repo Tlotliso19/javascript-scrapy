@@ -1,35 +1,36 @@
+version: 2.1
 
+orbs:
+  node: circleci/node@7.1.0
 
+jobs:
+  build:
+    executor: node/default
 
-
- version: 2.1
-
- orbs:
-    node: circleci/node@7.1.0
-
- jobs:
-    build:
-      executor: node/default
- 
-      steps:
-        - checkout
-        - node/install-packages:
-            pkg-manager: npm
-     
-        - run:
-            command: npm run tests
-            name: run tests
- 
-        - run: 
-            command: bash sudo_requirements.txt
-            name: download postgresql
-        - run: 
-            command: psql --version
-            name: check psql version
+    steps:
+      - checkout
+      
+      - node/install-packages:
+          pkg-manager: npm
+      
+      - run:
+          name: Run tests
+          command: npm run tests
 
       - run:
-          name: enter spql teminal
+          name: Install PostgreSQL
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y postgresql
+
+      - run:
+          name: Check PostgreSQL version
+          command: psql --version
+
+      - run:
+          name: Enter psql terminal and check version
           working_directory: three_websites/three_websites/sql
           command: |
-              psql --version
-        
+            psql --version
+
+
