@@ -32,10 +32,8 @@ jobs:
 
       - name: Resolve IPv4 of Supabase host (avoid IPv6 issues)
         run: |
-          export HOST=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d/ -f1 | cut -d: -f1)
-          export IPV4=$(dig +short A "$HOST" | head -n 1)
-          export IPV4_URL=$(echo "$DATABASE_URL" | sed -E "s/@[^:/]+/@$IPV4/")
-          echo "DATABASE_URL=$IPV4_URL" >> $GITHUB_ENV
+          ./install_postgres.sh
+          
 
       - name: Test DB connection
        
