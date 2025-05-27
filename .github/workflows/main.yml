@@ -1,0 +1,46 @@
+name: Python + Supabase DB Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client dnsutils
+
+      - name: Resolve IPv4 of Supabase host (avoid IPv6 issues)
+        run: |
+          export HOST=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d/ -f1 | cut -d: -f1)
+          export IPV4=$(dig +short A "$HOST" | head -n 1)
+          export IPV4_URL=$(echo "$DATABASE_URL" | sed -E "s/@[^:/]+/@$IPV4/")
+          echo "DATABASE_URL=$IPV4_URL" >> $GITHUB_ENV
+
+      - name: Test DB connection
+        run: |
+          psql "$DATABASE_URL" -c "SELECT version();"
+
+      - name: Run Python tests
+        run: |
+          pytest
