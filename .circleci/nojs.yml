@@ -1,36 +1,42 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@7.1.0
-
 jobs:
   build:
-    executor: node/default
+    docker:
+      - image: cimg/python:3.10  # Your Python version
+      - image: cimg/postgres:14.10
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: testdb
+          POSTGRES_PASSWORD: pass
+
+    environment:
+      DATABASE_URL: postgres://circleci:pass@localhost:5432/testdb
 
     steps:
       - checkout
-      
-      - node/install-packages:
-          pkg-manager: npm
-      
-      - run:
-          name: Run tests
-          command: npm run tests
 
       - run:
-          name: Install PostgreSQL
+          name: Install dependencies
           command: |
-            sudo apt-get update
-            sudo apt-get install -y postgresql
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
 
       - run:
-          name: Check PostgreSQL version
-          command: psql --version
-
-      - run:
-          name: Enter psql terminal and check version
-          working_directory: three_websites/three_websites/sql
+          name: Wait for PostgreSQL to be ready
           command: |
-            psql --version
+            sudo apt-get update && sudo apt-get install -y postgresql-client
+            dockerize -wait tcp://localhost:5432 -timeout 60s
+
+      - run:
+          name: Test DB connection using connection string
+          command: |
+            psql "$DATABASE_URL" -c "SELECT version();"
+
+      - run:
+          name: Run Python tests
+          command: |
+            pytest  # or your test runner
+
 
 
