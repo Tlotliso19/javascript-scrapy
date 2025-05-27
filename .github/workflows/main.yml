@@ -39,6 +39,8 @@ jobs:
        
         run: |
           echo "$DATABASE_URL"
+          cd /workspaces/javascript-scrapy/three_websites/three_websites/sql
+          ls
           psql "$DATABASE_URL" -c "SELECT version();"
 
       - name : TLOTLISO
