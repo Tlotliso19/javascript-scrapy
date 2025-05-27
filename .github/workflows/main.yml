@@ -36,10 +36,10 @@ jobs:
           
 
       - name: Test DB connection
-       
+        working-directory: three_websites/three_websites/sql
         run: |
           echo "$DATABASE_URL"
-          cd /workspaces/javascript-scrapy/three_websites/three_websites/sql
+
           ls
           psql "$DATABASE_URL" -c "SELECT version();"
 
