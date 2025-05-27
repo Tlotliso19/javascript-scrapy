@@ -39,6 +39,7 @@ jobs:
 
       - name: Test DB connection
         run: |
+          echo "$DATABASE_URL"
           psql "$DATABASE_URL" -c "SELECT version();"
 
       - name: Run Python tests
