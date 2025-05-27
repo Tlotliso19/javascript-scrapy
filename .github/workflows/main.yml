@@ -41,7 +41,7 @@ jobs:
        
         run: |
           echo "$DATABASE_URL"
-          psql -h db.ltxefuhyxlyhezlvdned.supabase.co -p 5432 -d postgres -U postgres
+          psql "$DATABASE_URL" -c "SELECT version();"
         
           
 
