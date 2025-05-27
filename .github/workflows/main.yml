@@ -43,7 +43,7 @@ jobs:
           echo "$DATABASE_URL"
           psql "$DATABASE_URL" -c "SELECT version();"
 
-      - name : TLOTLIS 
+      - name : TLOTLISO
         run: |
           psql -version
         
