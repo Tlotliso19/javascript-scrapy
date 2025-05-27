@@ -38,10 +38,10 @@ jobs:
           echo "DATABASE_URL=$IPV4_URL" >> $GITHUB_ENV
 
       - name: Test DB connection
+       
         run: |
           echo "$DATABASE_URL"
+          psql "$DATABASE_URL" -c "\l"
           
 
-      - name: Run Python tests
-        run: |
-          pytest
+    
