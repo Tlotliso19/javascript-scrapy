@@ -37,5 +37,7 @@ jobs:
       - run:
           name: Test DB connection using connection string
           command: |
-            psql -4 "postgresql://postgres:tlotliso101@db.ltxefuhyxlyhezlvdned.supabase.co:5432/postgres" -c "SELECT version();"
+            IP=$(dig +short A db.ltxefuhyxlyhezlvdned.supabase.co | head -n 1)
+            psql "postgresql://postgres:tlotliso101@$IP:5432/postgres" -c "SELECT version();"
+            psql "postgresql://postgres:tlotliso101@db.ltxefuhyxlyhezlvdned.supabase.co:5432/postgres" -c "SELECT version();"
             echo "hllo"
