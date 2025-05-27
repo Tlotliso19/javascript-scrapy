@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 today = datetime.now() 
 
 yesterday= today-timedelta(days=1)
-today_date=yesterday.strftime('%Y/%m/%d')
+today_date=today.strftime('%Y/%m/%d')
 
 class FinancialPricesSpider(scrapy.Spider):
     name = "financial_prices"
