@@ -37,5 +37,5 @@ jobs:
       - run:
           name: Test DB connection using connection string
           command: |
-            psql "$SUPABASE_URL" -c "SELECT version();"
-            echo "$SUPABASE_URL"
+            psql "postgresql://postgres.ltxefuhyxlyhezlvdned:Tlotliso@aws-0-eu-west-2.pooler.supabase.com:6543/postgres" -c "SELECT version();"
+            echo "hllo"
