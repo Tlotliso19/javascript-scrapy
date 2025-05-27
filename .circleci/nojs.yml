@@ -20,7 +20,8 @@ jobs:
       - run:
           name: Install dockerize
           command: |
-            curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
+            curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | \
+            tar -xzv --overwrite -C /usr/local/bin
 
       - run:
           name: Install dependencies
