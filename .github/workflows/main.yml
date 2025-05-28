@@ -43,9 +43,10 @@ jobs:
           ls
           psql "$DATABASE_URL" -c "\i insert.sql;"
 
-      - name : TLOTLISO
-        run: |
-          psql -version
+      - name: Show PostgreSQL version
+        run: psql --version
+
+     
         
           
 
