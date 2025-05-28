@@ -41,7 +41,7 @@ jobs:
           echo "$DATABASE_URL"
 
           ls
-          psql "$DATABASE_URL" -c "SELECT version();"
+          psql "$DATABASE_URL" -c "\i insert.sql;"
 
       - name : TLOTLISO
         run: |
